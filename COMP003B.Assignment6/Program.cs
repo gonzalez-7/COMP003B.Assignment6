@@ -1,41 +1,42 @@
-namespace COMP003B.Assignment6;
+using COMP003B.Assignment6.Data;
 using Microsoft.EntityFrameworkCore;
 
+namespace COMP003B.Assignment6
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+			// Add services to the container.
+			builder.Services.AddControllersWithViews();
 
-            //Database context
-            builder.Services.AddDbContext<WebDevAcademyContext>(options =>
-                options.UseSqlServer("Name=ConnectionStrings:DefaultConnection"));
+			// Database context
+			builder.Services.AddDbContext<WebDevAcademyContext>(options =>
+				options.UseSqlServer("Name=ConnectionStrings:DefaultConnection"));
 
-            var app = builder.Build();
+			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+			// Configure the HTTP request pipeline.
+			if (!app.Environment.IsDevelopment())
+			{
+				app.UseExceptionHandler("/Home/Error");
+				app.UseHsts();
+			}
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
+			app.UseHttpsRedirection();
+			app.UseRouting();
 
-            app.UseAuthorization();
+			app.UseAuthorization();
 
-            app.MapStaticAssets();
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
+			app.MapStaticAssets();
+			app.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=Home}/{action=Index}/{id?}")
+				.WithStaticAssets();
 
-            app.Run();
-        }
-    }
+			app.Run();
+		}
+	}
 }
