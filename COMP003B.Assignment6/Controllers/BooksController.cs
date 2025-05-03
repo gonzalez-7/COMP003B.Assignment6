@@ -22,7 +22,9 @@ namespace COMP003B.Assignment6.Controllers
 		// GET: Books
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Books.ToListAsync());
+			var books = await _context.Books.ToListAsync();
+			ViewBag.Count = books.Count;
+			return View(books);
 		}
 
 		// GET: Books/Details/5
@@ -57,12 +59,26 @@ namespace COMP003B.Assignment6.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("Id,Title,YearPublished")] Book book)
 		{
+			Console.WriteLine(">>> BOOK CREATE POST CALLED <<<");
+
 			if (ModelState.IsValid)
 			{
+				Console.WriteLine($">>> Saving Book: Title = {book.Title}, Year = {book.YearPublished}");
+
 				_context.Add(book);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+
+			Console.WriteLine(">>> MODEL STATE INVALID <<<");
+			foreach (var state in ModelState)
+			{
+				foreach (var error in state.Value.Errors)
+				{
+					Console.WriteLine($">>> Error in {state.Key}: {error.ErrorMessage}");
+				}
+			}
+
 			return View(book);
 		}
 

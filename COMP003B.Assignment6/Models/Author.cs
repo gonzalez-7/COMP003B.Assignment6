@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace COMP003B.Assignment6.Models
 {
@@ -11,6 +12,7 @@ namespace COMP003B.Assignment6.Models
 
 		public string Biography { get; set; }
 
+		[ValidateNever]
 		// Collection navigation property
 		public virtual ICollection<BookAuthor> BookAuthors { get; set; }
 	}
