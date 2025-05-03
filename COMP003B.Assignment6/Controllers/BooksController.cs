@@ -10,22 +10,22 @@ using COMP003B.Assignment6.Models;
 
 namespace COMP003B.Assignment6.Controllers
 {
-	public class AuthorsController : Controller
+	public class BooksController : Controller
 	{
 		private readonly WebDevAcademyContext _context;
 
-		public AuthorsController(WebDevAcademyContext context)
+		public BooksController(WebDevAcademyContext context)
 		{
 			_context = context;
 		}
 
-		// GET: Authors
+		// GET: Books
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Authors.ToListAsync());
+			return View(await _context.Books.ToListAsync());
 		}
 
-		// GET: Authors/Details/5
+		// GET: Books/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
@@ -33,40 +33,40 @@ namespace COMP003B.Assignment6.Controllers
 				return NotFound();
 			}
 
-			var author = await _context.Authors
-				.Include(a => a.BookAuthors)
-					.ThenInclude(ba => ba.Book)
+			var book = await _context.Books
+				.Include(b => b.BookAuthors)
+					.ThenInclude(ba => ba.Author)
 				.FirstOrDefaultAsync(m => m.Id == id);
 
-			if (author == null)
+			if (book == null)
 			{
 				return NotFound();
 			}
 
-			return View(author);
+			return View(book);
 		}
 
-		// GET: Authors/Create
+		// GET: Books/Create
 		public IActionResult Create()
 		{
 			return View();
 		}
 
-		// POST: Authors/Create
+		// POST: Books/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Name,Biography")] Author author)
+		public async Task<IActionResult> Create([Bind("Id,Title,YearPublished")] Book book)
 		{
 			if (ModelState.IsValid)
 			{
-				_context.Add(author);
+				_context.Add(book);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
-			return View(author);
+			return View(book);
 		}
 
-		// GET: Authors/Edit/5
+		// GET: Books/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
@@ -74,20 +74,20 @@ namespace COMP003B.Assignment6.Controllers
 				return NotFound();
 			}
 
-			var author = await _context.Authors.FindAsync(id);
-			if (author == null)
+			var book = await _context.Books.FindAsync(id);
+			if (book == null)
 			{
 				return NotFound();
 			}
-			return View(author);
+			return View(book);
 		}
 
-		// POST: Authors/Edit/5
+		// POST: Books/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Biography")] Author author)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Title,YearPublished")] Book book)
 		{
-			if (id != author.Id)
+			if (id != book.Id)
 			{
 				return NotFound();
 			}
@@ -96,12 +96,12 @@ namespace COMP003B.Assignment6.Controllers
 			{
 				try
 				{
-					_context.Update(author);
+					_context.Update(book);
 					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!AuthorExists(author.Id))
+					if (!BookExists(book.Id))
 					{
 						return NotFound();
 					}
@@ -112,10 +112,10 @@ namespace COMP003B.Assignment6.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			return View(author);
+			return View(book);
 		}
 
-		// GET: Authors/Delete/5
+		// GET: Books/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
@@ -123,34 +123,34 @@ namespace COMP003B.Assignment6.Controllers
 				return NotFound();
 			}
 
-			var author = await _context.Authors
+			var book = await _context.Books
 				.FirstOrDefaultAsync(m => m.Id == id);
-			if (author == null)
+			if (book == null)
 			{
 				return NotFound();
 			}
 
-			return View(author);
+			return View(book);
 		}
 
-		// POST: Authors/Delete/5
+		// POST: Books/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var author = await _context.Authors.FindAsync(id);
-			if (author != null)
+			var book = await _context.Books.FindAsync(id);
+			if (book != null)
 			{
-				_context.Authors.Remove(author);
+				_context.Books.Remove(book);
 			}
 
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool AuthorExists(int id)
+		private bool BookExists(int id)
 		{
-			return _context.Authors.Any(e => e.Id == id);
+			return _context.Books.Any(e => e.Id == id);
 		}
 	}
 }

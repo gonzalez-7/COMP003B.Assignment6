@@ -1,46 +1,46 @@
-﻿@model COMP003B.Assignment6.Models.Author
+﻿@model COMP003B.Assignment6.Models.Book
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Author Details</h1>
+<h1>Book Details</h1>
 
 <div>
-    <h4>Author</h4>
+    <h4>Book</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Title)
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Biography)
+            @Html.DisplayNameFor(model => model.YearPublished)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Biography)
+            @Html.DisplayFor(model => model.YearPublished)
         </dd>
     </dl>
 </div>
 
 <div>
-    <h4>Books</h4>
+    <h4>Authors</h4>
     @if (Model.BookAuthors != null && Model.BookAuthors.Any())
     {
         <ul class="list-unstyled">
             @foreach (var bookAuthor in Model.BookAuthors)
             {
-                <li>@bookAuthor.Book?.Title</li>
+                <li>@bookAuthor.Author?.Name</li>
             }
         </ul>
     }
     else
     {
-        <p><em>No books linked to this author.</em></p>
+        <p><em>No authors linked to this book.</em></p>
     }
 </div>
 
